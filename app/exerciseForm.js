@@ -1,14 +1,15 @@
 'use strict';
 
 import React from 'react';
-import WorkoutModel from './WorkoutModel';
 
 let ExerciseForm = React.createClass({
   render () {
+    var data = this.props.data;
+    
     return (
       <div>
-        <input type="text" placeholder="Exercise Name"/>
-        <input type="number" placeholder="Duration (sec)" />
+        <input type="text" placeholder="Exercise Name" value={data.name} required/>
+        <input type="number" placeholder="Duration (sec)" value={data.duration} required/>
       </div>
     );
   }
