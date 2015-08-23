@@ -1,28 +1,50 @@
 'use strict';
 
 import React from 'react';
-import ExerciseForm from './exerciseForm';
-import WorkoutModel from './WorkoutModel';
+import ExerciseFormList from './exerciseFormList';
+import { getWorkoutInfo, saveWorkoutInfo } from './workoutModel';
 
 let WorkoutForm = React.createClass({
-  // getInitialState () {
-  //   return {data: []};
-  // },
-  // componentDidMount () {
+  getInitialState () {
+    return {data: {
+      name: 'workout name',
+      exerciseRest: 15,
+      setRest: 30,
+      numSets: 2,
+      exercises: [
+        {
+          name: 'exercise name',
+          duration: 30
+        }
+      ]
+    }};
+  },
+  componentDidMount () {
+    // this.loadWorkoutInfo();
+  },
+  loadWorkoutInfo () {
+    getWorkoutInfo()
+      .then((data) => {
+        this.setState({data: data});
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  },
+  handleSubmit () {
 
-  // },
-  // loadWorkoutInfo () {
-  //   WorkoutModel.getInfo()
-  // },
+  },
   render () {
+    let data = this.state.data;
     return (
-      <form>
-        <input type="text" placeholder="Workout Name"/>
+      <form onSubmit={this.handleSubmit}>
+        <input type="text" placeholder="Workout Name" value={data.name}/>
         <br/>
-        <input type="number" placeholder="Rest b/w Exercises"/>
-        <input type="number" placeholder="Rest b/w Sets"/>
-        <input type="number" placeholder="# of Sets"/>
-        <ExerciseForm/>
+        <input type="number" placeholder="Rest b/w Exercises" value={data.exerciseRest} required/>
+        <input type="number" placeholder="Rest b/w Sets" value={data.setRest} required/>
+        <input type="number" placeholder="# of Sets" value={data.numSets} required/>
+        <ExerciseFormList data={data.exercises}/>
+        <button type="submit">Save</button>
       </form>
     );
   }
